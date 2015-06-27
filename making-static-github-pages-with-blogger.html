@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 
-<!-- Mirrored from codedelicias.blogspot.de/2015/05/making-static-github-pages-with-blogger.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 May 2015 16:49:48 GMT -->
+<!-- Mirrored from codedelicias.blogspot.de/2015/05/making-static-github-pages-with-blogger.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jun 2015 15:25:32 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
@@ -16,10 +16,10 @@ b[f]&&b[f].csi&&(a=Math.floor(b[f].csi().pageT),e&&0<c&&(e[g]("_tbnd",void 0,b[f
 <link rel="service.post" type="application/atom+xml" title="Pepe&#8217;s Code Delicias - Atom" href="http://www.blogger.com/feeds/3061683056005047223/posts/default" />
 
 <link rel="alternate" type="application/atom+xml" title="Pepe&#8217;s Code Delicias - Atom" href="http://codedelicias.blogspot.com/feeds/9098746903004512519/comments/default" />
-<link href='png/bloggergithub-2.png' rel='image_src'/>
+<link href='png/statictogithub-2.png' rel='image_src'/>
 <!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
 <title>
-Making static GitHub pages with Blogger
+Making static GitHub pages with Blogger or other dynamic site generator
           | 
           Pepe&#8217;s Code Delicias
 </title>
@@ -34,7 +34,7 @@ Making static GitHub pages with Blogger
 <script>
       hljs.initHighlightingOnLoad();</script>
 <link type='text/css' rel='stylesheet' href='css/1943648796-widget_css_bundle.css' />
-<link type='text/css' rel='stylesheet' href='css/authorizatione178.css?targetBlogID=3061683056005047223&amp;zx=c8e65952-1c21-44d6-9659-871244d1f980' />
+<link type='text/css' rel='stylesheet' href='css/authorization350a.css?targetBlogID=3061683056005047223&amp;zx=9c509356-2b30-4afe-8631-abeafdf1e3c8' />
 <style id='page-skin-1' type='text/css'><!--
 /*
 -----------------------------------------------
@@ -2377,7 +2377,7 @@ Pepe&#8217;s Code Delicias
 <div class='ft-ctbox clearfix'>
 <div class='post hentry clearfix'>
 <h1 class='post-title entry-title'>
-Making static GitHub pages with Blogger
+Making static GitHub pages with Blogger or other dynamic site generator
 </h1>
 <div class='post-body entry-content' id='post-body-9098746903004512519'>
 <div class='post-materials clearfix'>
@@ -2412,35 +2412,54 @@ comments
 </span>
 </div>
 <div class="separator" style="clear: both; text-align: center;">
-<a href="png/bloggergithub.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="322" src="png/bloggergithub-2.png" width="640" /></a></div>
-Here is a script to make a Blogger blog static and publish it as a GitHub page:<br />
+<a href="png/statictogithub.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="283" src="png/statictogithub-2.png" width="640" /></a></div>
+GitHub pages has its own site generator besides the myriad of static generator alternatives. Still there are plenty of dynamic site generators that make the life of the content creator simpler. As long as the site is not too complex several tools exist to convert any website to a static one. One of such tools is <a href="https://www.httrack.com/">HTTrack</a> which can automate the process of downloading the site and resolving the links to a local static copy. Here I provide a bash script (usable in Windows thanks to <a href="http://msysgit.github.io/">msysgit</a>'s shell emulator) to run HTTrack to download a fresh copy of the website and push it to GitHub.<br />
 <br />
+For this example an HTTrack profile for your website needs to be created first using the HTTrack GUI. In this example the profile is available on the local folder <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">codedelicias.blogspot.de/</span> inside the main folder (where the script resides). Make sure this contains a sub-folder called <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">hts-cache/</span> which is created by HTTrack. You will have to play with HTTtrack to find the best way to download your site and keep the links. In my case I just enabled <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">Html in web, images/other in web/xxx where xxx is the file extension</span> on the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">Build &gt; local structure settings</span> to keep files more organized. In this example a Non-Instal copy of HTTTrack is available also on the main folder.<br />
 <br />
-<code>
-</code>
+The local git hub repository is on the folder <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">pepgma.github.io/</span> inside the main folder.<br />
+<br />
+I used Blogger as the dynamic site generator. You will have to try for your own with other services/applications. The script I use to update GitHub pages is:<br />
+<br />
 <pre><code>#!/bin/bash
+# update.sh: Update the blog. Saved as .sh so Windows recognizes
+# it as an executable script.
 
-# TODO: delete old files first using git
+# Delete previous version files, later git will only upload
+# changed files from HTTrack's copy
 cd pepgma.github.io/
-rm -rf *.html css gif ico jpg js other png
-cd ../codedelicias.blogspot.de/
-../httrack-noinst-3.48.19/httrack.exe #--quiet --update
-cd web/
-cp -r *.html css gif ico jpg js other png ../../pepgma.github.io/
-cd ../../pepgma.github.io/other/
+rm -rf *.html css ico jpg js other png
 
-# Fix wrong links in static json queries
-# This produces an warning, can be fixed with this
-# http://stackoverflow.com/questions/14313318/permission-denied-when-sed-in-place-edit-in-mingw
-URL='http:\\/\\/codedelicias\.blogspot\.com\\/20..\\/..\\/'
-sed -i 's|'$URL'||g' *
-cd ..
+# Update mirror using HTTrack, do not ask to update, just
+# do it
+cd ../codedelicias.blogspot.de/
+../httrack-noinst-3.48.19/httrack.exe --quiet --update
+
+# Copy files to repository folder
+cd web/
+cp -r *.html css ico jpg js other png ../../pepgma.github.io/
+
+# Go to repository
+cd ../../pepgma.github.io/
+
+# # Enable this section only if you have to do some modifications to the mirrored 
+# # files. In the Blogger case some links in static json queries are broken.
+# # I used sed to fix them.
+# # Note This produces a warning that can be fixed:
+# # http://stackoverflow.com/questions/14313318/permission-denied-when-sed-in-place-edit-in-mingw
+# cd other/
+# URL='http:\\/\\/codedelicias\.blogspot\.com\\/20..\\/..\\/'
+# sed -i 's|'$URL'||g' *
+# cd ..
+
+# Synchronize mirror with GitHub pages
 git add --all
 git commit -m "Update"
 git push
+
+# See result and wait to finish
+read -n1 -r -p "Press any key to finish..."
 </code></pre>
-<code>
-</code>
 <div style='clear: both;'></div>
 </div>
 <div class='post-footer'>
@@ -2720,24 +2739,6 @@ Converting an old keyboard in a nice organic-looking one
 <li>
 <div class='item-content'>
 <div class='item-thumbnail'>
-<a href='science-news.html'>
-<img alt='' border='0' height='72' src='png/wiredscience-2.png' width='72'/>
-</a>
-</div>
-<div class='item-title'>
-<a href='science-news.html'>
-Good Sources of Science News
-</a>
-</div>
-<div class='item-snippet'>
-        Here is a list I compiled of good science news sources. In my opinion they summarize news from several primary sources and in some c...
-</div>
-</div>
-<div style='clear: both;'></div>
-</li>
-<li>
-<div class='item-content'>
-<div class='item-thumbnail'>
 <a href='captain-forever.html'>
 <img alt='' border='0' height='72' src='png/capforever-2.png' width='72'/>
 </a>
@@ -2756,17 +2757,35 @@ Favorite Games: Captain Forever
 <li>
 <div class='item-content'>
 <div class='item-thumbnail'>
-<a href='fix-your-headphone-jacks-with-epoxy-and.html'>
-<img alt='' border='0' height='72' src='jpg/fixjack-2.jpg' width='72'/>
+<a href='reddit-is-written-in-python-twitter-is.html'>
+<img alt='' border='0' height='72' src='png/weblangs-2.png' width='72'/>
 </a>
 </div>
 <div class='item-title'>
-<a href='fix-your-headphone-jacks-with-epoxy-and.html'>
-Fix your headphone jacks with epoxy and heatshrink tube
+<a href='reddit-is-written-in-python-twitter-is.html'>
+A short survey of websites and programming languages
 </a>
 </div>
 <div class='item-snippet'>
-   Sooner or later headphone plugs break from so much bending and/or keeping them in your pocket. The problem is usually the copper inside b...
+    This is a list of the programing languages some popular websites were originally written on:   Reddit was written in Python  Twitter was...
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li>
+<div class='item-content'>
+<div class='item-thumbnail'>
+<a href='science-news.html'>
+<img alt='' border='0' height='72' src='png/wiredscience-2.png' width='72'/>
+</a>
+</div>
+<div class='item-title'>
+<a href='science-news.html'>
+Good Sources of Science News
+</a>
+</div>
+<div class='item-snippet'>
+        Here is a list I compiled of good science news sources. In my opinion they summarize news from several primary sources and in some c...
 </div>
 </div>
 <div style='clear: both;'></div>
@@ -3076,18 +3095,18 @@ Pepe&#8217;s Code Delicias
 </script>
 <script type="text/javascript">
 if (window.jstiming) window.jstiming.load.tick('widgetJsBefore');
-</script><script type="text/javascript" src="js/4282991077-widgets.js"></script>
+</script><script type="text/javascript" src="js/3998319842-widgets.js"></script>
 <script type="text/javascript" src="js/plusone.js"></script>
 <script type='text/javascript'>
 if (typeof(BLOG_attachCsiOnload) != 'undefined' && BLOG_attachCsiOnload != null) { window['blogger_templates_experiment_id'] = "templatesV1";window['blogger_blog_id'] = '3061683056005047223';BLOG_attachCsiOnload('item_'); }_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3061683056005047223','making-static-github-pages-with-blogger.html','3061683056005047223');
-_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3061683056005047223', 'bloggerUrl': 'http://www.blogger.com', 'title': 'Pepe&#8217;s Code Delicias', 'pageType': 'item', 'postId': '9098746903004512519', 'url': 'http://codedelicias.blogspot.de/2015/05/making-static-github-pages-with-blogger.html', 'canonicalUrl': 'http://codedelicias.blogspot.com/2015/05/making-static-github-pages-with-blogger.html', 'canonicalHomepageUrl': 'http://codedelicias.blogspot.com/', 'homepageUrl': 'http://codedelicias.blogspot.de/', 'blogspotFaviconUrl': 'http://codedelicias.blogspot.de/favicon.ico', 'enabledCommentProfileImages': true, 'adultContent': false, 'disableAdSenseWidget': false, 'analyticsAccountNumber': '', 'searchLabel': '', 'searchQuery': '', 'pageName': 'Making static GitHub pages with Blogger', 'pageTitle': 'Pepe&#8217;s Code Delicias: Making static GitHub pages with Blogger', 'encoding': 'UTF-8', 'locale': 'en_GB', 'localeUnderscoreDelimited': 'en_gb', 'isPrivate': true, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'languageDirection': 'ltr', 'feedLinks': '\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42Pepe&#8217;s Code Delicias - Atom\42 href\75\42http://codedelicias.blogspot.com/feeds/posts/default\42 /\76\n\74link rel\75\42alternate\42 type\75\42application/rss+xml\42 title\75\42Pepe&#8217;s Code Delicias - RSS\42 href\75\42http://codedelicias.blogspot.com/feeds/posts/default?alt\75rss\42 /\76\n\74link rel\75\42service.post\42 type\75\42application/atom+xml\42 title\75\42Pepe&#8217;s Code Delicias - Atom\42 href\75\42http://www.blogger.com/feeds/3061683056005047223/posts/default\42 /\76\n\n\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42Pepe&#8217;s Code Delicias - Atom\42 href\75\42http://codedelicias.blogspot.com/feeds/9098746903004512519/comments/default\42 /\76\n', 'meTag': '', 'openIdOpTag': '', 'postImageThumbnailUrl': 'http://4.bp.blogspot.com/-zIBVe3iqJwQ/VWTTYDiNvMI/AAAAAAAAALM/B15bKromUx8/s72-c/bloggergithub.png', 'postImageUrl': 'http://4.bp.blogspot.com/-zIBVe3iqJwQ/VWTTYDiNvMI/AAAAAAAAALM/B15bKromUx8/s640/bloggergithub.png', 'latencyHeadScript': '\74script type\75\42text/javascript\42\76(function() { var b\75window,f\75\42chrome\42,g\75\42tick\42,k\75\42jstiming\42;(function(){function d(a){this.t\75{};this.tick\75function(a,d,c){var e\75void 0!\75c?c:(new Date).getTime();this.t[a]\75[e,d];if(void 0\75\75c)try{b.console.timeStamp(\42CSI/\42+a)}catch(h){}};this[g](\42start\42,null,a)}var a;b.performance\46\46(a\75b.performance.timing);var n\75a?new d(a.responseStart):new d;b.jstiming\75{Timer:d,load:n};if(a){var c\75a.navigationStart,h\75a.responseStart;0\74c\46\46h\76\75c\46\46(b[k].srt\75h-c)}if(a){var e\75b[k].load;0\74c\46\46h\76\75c\46\46(e[g](\42_wtsrt\42,void 0,c),e[g](\42wtsrt_\42,\42_wtsrt\42,h),e[g](\42tbsd_\42,\42wtsrt_\42))}try{a\75null,\nb[f]\46\46b[f].csi\46\46(a\75Math.floor(b[f].csi().pageT),e\46\0460\74c\46\46(e[g](\42_tbnd\42,void 0,b[f].csi().startE),e[g](\42tbnd_\42,\42_tbnd\42,c))),null\75\75a\46\46b.gtbExternal\46\46(a\75b.gtbExternal.pageT()),null\75\75a\46\46b.external\46\46(a\75b.external.pageT,e\46\0460\74c\46\46(e[g](\42_tbnd\42,void 0,b.external.startE),e[g](\42tbnd_\42,\42_tbnd\42,c))),a\46\46(b[k].pt\75a)}catch(p){}})();b.tickAboveFold\75function(d){var a\0750;if(d.offsetParent){do a+\75d.offsetTop;while(d\75d.offsetParent)}d\75a;750\76\75d\46\46b[k].load[g](\42aft\42)};var l\75!1;function m(){l||(l\75!0,b[k].load[g](\42firstScrollTime\42))}b.addEventListener?b.addEventListener(\42scroll\42,m,!1):b.attachEvent(\42onscroll\42,m);\n })();\74/script\076', 'mobileHeadScript': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/cda3ddef07a85452', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'sf': 'n', 'tf': ''}}, {'name': 'skin', 'data': {'vars': {}, 'override': ''}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\75classic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\75flipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\75magazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\75mosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\75sidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\75snapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\75timeslide'}}}]);
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3061683056005047223', 'bloggerUrl': 'http://www.blogger.com', 'title': 'Pepe&#8217;s Code Delicias', 'pageType': 'item', 'postId': '9098746903004512519', 'url': 'http://codedelicias.blogspot.de/2015/05/making-static-github-pages-with-blogger.html', 'canonicalUrl': 'http://codedelicias.blogspot.com/2015/05/making-static-github-pages-with-blogger.html', 'canonicalHomepageUrl': 'http://codedelicias.blogspot.com/', 'homepageUrl': 'http://codedelicias.blogspot.de/', 'blogspotFaviconUrl': 'http://codedelicias.blogspot.de/favicon.ico', 'enabledCommentProfileImages': true, 'adultContent': false, 'disableAdSenseWidget': false, 'analyticsAccountNumber': '', 'searchLabel': '', 'searchQuery': '', 'pageName': 'Making static GitHub pages with Blogger or other dynamic site generator', 'pageTitle': 'Pepe&#8217;s Code Delicias: Making static GitHub pages with Blogger or other dynamic site generator', 'encoding': 'UTF-8', 'locale': 'en_GB', 'localeUnderscoreDelimited': 'en_gb', 'isPrivate': true, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'languageDirection': 'ltr', 'feedLinks': '\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42Pepe&#8217;s Code Delicias - Atom\42 href\75\42http://codedelicias.blogspot.com/feeds/posts/default\42 /\76\n\74link rel\75\42alternate\42 type\75\42application/rss+xml\42 title\75\42Pepe&#8217;s Code Delicias - RSS\42 href\75\42http://codedelicias.blogspot.com/feeds/posts/default?alt\75rss\42 /\76\n\74link rel\75\42service.post\42 type\75\42application/atom+xml\42 title\75\42Pepe&#8217;s Code Delicias - Atom\42 href\75\42http://www.blogger.com/feeds/3061683056005047223/posts/default\42 /\76\n\n\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42Pepe&#8217;s Code Delicias - Atom\42 href\75\42http://codedelicias.blogspot.com/feeds/9098746903004512519/comments/default\42 /\76\n', 'meTag': '', 'openIdOpTag': '', 'postImageThumbnailUrl': 'http://2.bp.blogspot.com/-t9XfjKcBUSU/VY6yMz_klaI/AAAAAAAAALw/7as9-cHb6SE/s72-c/statictogithub.png', 'postImageUrl': 'http://2.bp.blogspot.com/-t9XfjKcBUSU/VY6yMz_klaI/AAAAAAAAALw/7as9-cHb6SE/s640/statictogithub.png', 'latencyHeadScript': '\74script type\75\42text/javascript\42\76(function() { var b\75window,f\75\42chrome\42,g\75\42tick\42,k\75\42jstiming\42;(function(){function d(a){this.t\75{};this.tick\75function(a,d,c){var e\75void 0!\75c?c:(new Date).getTime();this.t[a]\75[e,d];if(void 0\75\75c)try{b.console.timeStamp(\42CSI/\42+a)}catch(h){}};this[g](\42start\42,null,a)}var a;b.performance\46\46(a\75b.performance.timing);var n\75a?new d(a.responseStart):new d;b.jstiming\75{Timer:d,load:n};if(a){var c\75a.navigationStart,h\75a.responseStart;0\74c\46\46h\76\75c\46\46(b[k].srt\75h-c)}if(a){var e\75b[k].load;0\74c\46\46h\76\75c\46\46(e[g](\42_wtsrt\42,void 0,c),e[g](\42wtsrt_\42,\42_wtsrt\42,h),e[g](\42tbsd_\42,\42wtsrt_\42))}try{a\75null,\nb[f]\46\46b[f].csi\46\46(a\75Math.floor(b[f].csi().pageT),e\46\0460\74c\46\46(e[g](\42_tbnd\42,void 0,b[f].csi().startE),e[g](\42tbnd_\42,\42_tbnd\42,c))),null\75\75a\46\46b.gtbExternal\46\46(a\75b.gtbExternal.pageT()),null\75\75a\46\46b.external\46\46(a\75b.external.pageT,e\46\0460\74c\46\46(e[g](\42_tbnd\42,void 0,b.external.startE),e[g](\42tbnd_\42,\42_tbnd\42,c))),a\46\46(b[k].pt\75a)}catch(p){}})();b.tickAboveFold\75function(d){var a\0750;if(d.offsetParent){do a+\75d.offsetTop;while(d\75d.offsetParent)}d\75a;750\76\75d\46\46b[k].load[g](\42aft\42)};var l\75!1;function m(){l||(l\75!0,b[k].load[g](\42firstScrollTime\42))}b.addEventListener?b.addEventListener(\42scroll\42,m,!1):b.attachEvent(\42onscroll\42,m);\n })();\74/script\076', 'mobileHeadScript': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/cda3ddef07a85452', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'sf': 'n', 'tf': ''}}, {'name': 'skin', 'data': {'vars': {}, 'override': ''}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\75classic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\75flipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\75magazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\75mosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\75sidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\75snapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\75timeslide'}}}]);
 _WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', null, document.getElementById('Header1'), {}, 'displayModeFull'));
-_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'content', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/1154003098-lbx__en_gb.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/2392111094-lightbox_bundle.css'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'content', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/506277617-lbx__en_gb.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/2392111094-lightbox_bundle.css'}, 'displayModeFull'));
 _WidgetManager._RegisterWidget('_PopularPostsView', new _WidgetInfo('PopularPosts2', 'sidebar', null, document.getElementById('PopularPosts2'), {}, 'displayModeFull'));
 _WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label2', 'sidebar', null, document.getElementById('Label2'), {}, 'displayModeFull'));
 _WidgetManager._RegisterWidget('_PopularPostsView', new _WidgetInfo('PopularPosts1', 'footer1', null, document.getElementById('PopularPosts1'), {}, 'displayModeFull'));
 </script>
 </body>
 
-<!-- Mirrored from codedelicias.blogspot.de/2015/05/making-static-github-pages-with-blogger.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 May 2015 16:49:48 GMT -->
+<!-- Mirrored from codedelicias.blogspot.de/2015/05/making-static-github-pages-with-blogger.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jun 2015 15:25:33 GMT -->
 </html>
