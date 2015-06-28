@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 
-<!-- Mirrored from codedelicias.blogspot.de/search/label/programming by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jun 2015 15:26:04 GMT -->
+<!-- Mirrored from codedelicias.blogspot.de/search/label/programming by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jun 2015 08:42:47 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
@@ -32,7 +32,7 @@ Pepe&#8217;s Code Delicias: programming
 <script>
       hljs.initHighlightingOnLoad();</script>
 <link type='text/css' rel='stylesheet' href='css/1943648796-widget_css_bundle.css' />
-<link type='text/css' rel='stylesheet' href='css/authorization350a.css?targetBlogID=3061683056005047223&amp;zx=9c509356-2b30-4afe-8631-abeafdf1e3c8' />
+<link type='text/css' rel='stylesheet' href='css/authorizatione36f.css?targetBlogID=3061683056005047223&amp;zx=2ac2e61b-e4b1-4de0-8f8c-83df9094ed87' />
 <style id='page-skin-1' type='text/css'><!--
 /*
 -----------------------------------------------
@@ -2368,6 +2368,77 @@ Showing posts with label <b>programming</b>. <a href="http://codedelicias.blogsp
 <!-- google_ad_section_start(name=default) -->
 <div class='animated'>
 <div class='post hentry clearfix'>
+<div class='post-body entry-content' id='post-body-9098746903004512519'>
+<div id='9098746903004512519'>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="png/statictogithub.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="283" src="png/statictogithub-2.png" width="640" /></a></div>
+GitHub pages has its own site generator besides the myriad of static generator alternatives. Still there are plenty of dynamic site generators that make the life of the content creator simpler. As long as the site is not too complex several tools exist to convert any website to a static one. One of such tools is <a href="https://www.httrack.com/">HTTrack</a> which can automate the process of downloading the site and resolving the links to a local static copy. Here I provide a bash script (usable in Windows thanks to <a href="http://msysgit.github.io/">msysgit</a>'s shell emulator) to run HTTrack to download a fresh copy of the website and push it to GitHub.<br />
+<br />
+For this example an HTTrack profile for your website needs to be created first using the HTTrack GUI. In this example the profile is available on the local folder <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">codedelicias.blogspot.de/</span> inside the main folder (where the script resides). Make sure this contains a sub-folder called <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">hts-cache/</span> which is created by HTTrack. You will have to play with HTTtrack to find the best way to download your site and keep the links. In my case I just enabled <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">Html in web, images/other in web/xxx where xxx is the file extension</span> on the <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">Build &gt; local structure settings</span> to keep files more organized. In this example a Non-Instal copy of HTTTrack is available also on the main folder.<br />
+<br />
+The local git hub repository is on the folder <span style="font-family: &quot;Courier New&quot;,Courier,monospace;">pepgma.github.io/</span> inside the main folder.<br />
+<br />
+I used Blogger as the dynamic site generator. You will have to try for your own with other services/applications. The script I use to update GitHub pages is:<br />
+<br />
+<pre><code>#!/bin/bash
+# update.sh: Update the blog. Saved as .sh so Windows recognizes
+# it as an executable script.
+
+# Delete previous version files, later git will only upload
+# changed files from HTTrack's copy
+cd pepgma.github.io/
+rm -rf *.html css ico jpg js other png
+
+# Update mirror using HTTrack, do not ask to update, just
+# do it
+cd ../codedelicias.blogspot.de/
+../httrack-noinst-3.48.19/httrack.exe --quiet --update
+
+# Copy files to repository folder
+cd web/
+cp -r *.html css ico jpg js other png ../../pepgma.github.io/
+
+# Go to repository
+cd ../../pepgma.github.io/
+
+# # Enable this section only if you have to do some modifications to the mirrored 
+# # files. In the Blogger case some links in static json queries are broken.
+# # I used sed to fix them.
+# # Note This produces a warning that can be fixed:
+# # http://stackoverflow.com/questions/14313318/permission-denied-when-sed-in-place-edit-in-mingw
+# cd other/
+# URL='http:\\/\\/codedelicias\.blogspot\.com\\/20..\\/..\\/'
+# sed -i 's|'$URL'||g' *
+# cd ..
+
+# Synchronize mirror with GitHub pages
+git add --all
+git commit -m "Update"
+git push
+
+# See result and wait to finish
+read -n1 -r -p "Press any key to finish..."
+</code></pre>
+</div>
+<script type='text/javascript'>
+                          var x="Making static GitHub pages with Blogger or other dynamic site generator",y="making-static-github-pages-with-blogger.html",z="pepgma",t="26.5.15";readmore("9098746903004512519")
+                        </script>
+<div style='clear: both;'></div>
+</div>
+<div class='post-footer'>
+<div class='post-footer-line post-footer-line-1'>
+</div>
+<div class='post-footer-line post-footer-line-2'>
+</div>
+<div class='post-footer-line post-footer-line-3'>
+<span class='post-location'>
+</span>
+</div>
+</div>
+</div>
+</div>
+<div class='animated'>
+<div class='post hentry clearfix'>
 <div class='post-body entry-content' id='post-body-5017703693978767178'>
 <div id='5017703693978767178'>
 <div dir="ltr" style="text-align: left;" trbidi="on">
@@ -2468,6 +2539,24 @@ Mini Review of Diagramming Applications
 <li>
 <div class='item-content'>
 <div class='item-thumbnail'>
+<a href='making-static-github-pages-with-blogger.html'>
+<img alt='' border='0' height='72' src='png/statictogithub-3.png' width='72'/>
+</a>
+</div>
+<div class='item-title'>
+<a href='making-static-github-pages-with-blogger.html'>
+Making static GitHub pages with Blogger or other dynamic site generator
+</a>
+</div>
+<div class='item-snippet'>
+  GitHub pages has its own site generator besides the myriad of static generator alternatives. Still there are plenty of dynamic site genera...
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li>
+<div class='item-content'>
+<div class='item-thumbnail'>
 <a href='canabalt.html'>
 <img alt='' border='0' height='72' src='png/cana-2.png' width='72'/>
 </a>
@@ -2551,24 +2640,6 @@ Favorite Games: Captain Forever
 </div>
 <div class='item-snippet'>
        Captain Forever:  Destroy other ships and improve your own with their parts.
-</div>
-</div>
-<div style='clear: both;'></div>
-</li>
-<li>
-<div class='item-content'>
-<div class='item-thumbnail'>
-<a href='making-static-github-pages-with-blogger.html'>
-<img alt='' border='0' height='72' src='png/statictogithub-3.png' width='72'/>
-</a>
-</div>
-<div class='item-title'>
-<a href='making-static-github-pages-with-blogger.html'>
-Making static GitHub pages with Blogger or other dynamic site generator
-</a>
-</div>
-<div class='item-snippet'>
-  GitHub pages has its own site generator besides the myriad of static generator alternatives. Still there are plenty of dynamic site genera...
 </div>
 </div>
 <div style='clear: both;'></div>
@@ -2894,7 +2965,6 @@ Pepe&#8217;s Code Delicias
         /* Tooltips */
         //]]>
 </script>
-<script type="text/javascript" src="js/nfbqkswnek0lwp3mlqu5sur2irhe_op27jpykoeegja.js"></script><script type="text/javascript" src="js/csic9bb.js?h=nfbqKSWNeK0LwP3MlqU5suR2irHe_Op27jPYKOEEgJA"></script>
 <script type="text/javascript">
 if (window.jstiming) window.jstiming.load.tick('widgetJsBefore');
 </script><script type="text/javascript" src="js/3998319842-widgets.js"></script>
@@ -2910,5 +2980,5 @@ _WidgetManager._RegisterWidget('_PopularPostsView', new _WidgetInfo('PopularPost
 </script>
 </body>
 
-<!-- Mirrored from codedelicias.blogspot.de/search/label/programming by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 27 Jun 2015 15:26:04 GMT -->
+<!-- Mirrored from codedelicias.blogspot.de/search/label/programming by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jun 2015 08:42:47 GMT -->
 </html>
